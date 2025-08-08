@@ -1,0 +1,99 @@
+---
+title: "Market Basket Analysis"
+author: "Bala Shunmugam M"
+format: html
+editor: visual
+---
+
+# Introduction:
+
+Market Basket Analysis (MBA) is a powerful technique used to uncover associations between products based on customer purchasing behavior. By analyzing transaction data, businesses can identify which items are frequently bought together, enabling smarter decisions in promotions, product placement, and inventory management.
+
+In this analysis, we use transactional data from a grocery dataset to discover frequent item combinations and generate actionable association rules using the Apriori algorithm.
+
+```{r}
+data <- read.csv("D:/IBA Files/Basket Analysis/Groceries_dataset.csv",header = TRUE)
+```
+
+## 1. Data Preparation:
+
+To begin, we load the dataset and prepare it for analysis. Each row in the dataset represents a single item purchased by a customer on a specific date. To understand co-purchase behavior, we group items by transaction using a unique identifier that combines `Member_number` and `Date`.
+
+This transformation allows us to analyze which items were bought together in the same shopping trip, forming the foundation for Market Basket Analysis.
+
+```{r echo = FALSE , warning=FALSE, message=FALSE}
+library(arules)
+library(arulesViz)
+```
+
+```{r}
+# Step 2: Create a unique Transaction ID
+data$TransactionID <- paste(data$Member_number, data$Date, sep = "_")
+# Step 3: Keep only TransactionID and itemDescription
+basket_data <- data[, c("TransactionID", "itemDescription")]
+# Step 4: Save to CSV for arules
+write.csv(basket_data, "transactions.csv", row.names = FALSE)
+# Step 5: Read transactions in 'single' format
+trans <- read.transactions("transactions.csv", format = "single", 
+                           cols = c("TransactionID", "itemDescription"), 
+                           sep = ",", header = TRUE, rm.duplicates = TRUE)
+
+```
+
+## 2. Transaction Overview:
+
+Before mining rules, we explore the transaction data to understand its structure and item frequency. The summary provides insights into the number of transactions, unique items, and average basket size.
+
+The item frequency plot highlights the most commonly purchased products, helping us identify popular items that may drive associations.
+
+```{r}
+# Step 6: Explore the transaction data
+summary(trans)
+itemFrequencyPlot(trans, topN = 10, type = "absolute")
+```
+
+## 3. Rule Mining with Apriori:
+
+Using the Apriori algorithm, we generate association rules based on specified thresholds for support and confidence. Support measures how frequently an itemset appears in the dataset, while confidence indicates the likelihood of purchasing one item given another.
+
+Lower thresholds are used to ensure that even less frequent but potentially valuable associations are captured. This step reveals patterns in customer behavior that can inform marketing and merchandising strategies.
+
+```{r}
+# Step 7: Run Apriori algorithm
+rules <- apriori(trans, parameter = list(supp = 0.0005, conf = 0.1))
+```
+
+## 4. Rule Intrepretation:
+
+The generated rules are sorted by lift, which measures the strength of association beyond random chance. A lift value greater than 1 indicates a positive correlation between items.
+
+By inspecting the top rules, we gain insights into which products are strongly linked in customer baskets. These findings can be used to design product bundles, cross-promotions, and personalized recommendations.
+
+```{r}
+# Step 8: Inspect top rules
+summary(rules)
+inspect(sort(rules, by = "lift")[1:10])
+```
+
+## 5. Visualization Association:
+
+To enhance interpretability, we visualize the association rules using a network graph. This representation shows how items are connected, with stronger relationships appearing as thicker or more central links.
+
+Visualization helps stakeholders quickly grasp the structure of item associations and identify key products that influence purchasing behavior.
+
+```{r}
+# Step 9: Optional – Visualize rules
+plot(rules, method = "graph", engine = "htmlwidget")
+```
+
+# Conclusion:
+
+This Market Basket Analysis has revealed valuable insights into customer purchasing behavior by identifying frequent item combinations and strong associations between products. Through the Apriori algorithm and rule visualization, we’ve uncovered patterns that go beyond individual product popularity—highlighting how items interact within the context of a shopping basket.
+
+The analysis demonstrates that even low-frequency items can play a strategic role when paired with high-confidence associations. These findings provide a data-driven foundation for enhancing customer experience and driving business growth.
+
+#### About the Author
+
+I’m a student in the MBA Program (2025–2027), currently navigating Trimester I at Amrita School of Business, Amrita Vishwa Vidyapeetham, Coimbatore. This **assignment/blog** was written as part of our coursework for **Introduction to Business Analytics.**
+
+Blog link:
