@@ -1,4 +1,4 @@
-## I’m a student in the MBA Program (2025–2027), currently navigating Trimester I at Amrita School of Business, Amrita Vishwa Vidyapeetham, Coimbatore. This assignment/blog was written as part of our coursework for Introduction to Business Analytics. 
+## Market segmentation For DemoKTC Company 
 
 <!--
 **Bala-Shunmugam-M/Bala-Shunmugam-M** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
