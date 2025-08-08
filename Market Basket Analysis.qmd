@@ -96,4 +96,5 @@ The analysis demonstrates that even low-frequency items can play a strategic rol
 
 I’m a student in the MBA Program (2025–2027), currently navigating Trimester I at Amrita School of Business, Amrita Vishwa Vidyapeetham, Coimbatore. This **assignment/blog** was written as part of our coursework for **Introduction to Business Analytics.**
 
-Blog link: <https://github.com/Bala-Shunmugam-M/Bala-Shunmugam-M>
+Blog link: <https://github.com/Bala-Shunmugam-M/Bala-Shunmugam-M/tree/Market-Basket-Analysis>
+
